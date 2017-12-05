@@ -616,6 +616,14 @@ function! s:MRU_Window_Edit_File(fname, multi, edit_type, open_type)
                 else
                     exe 'sview ' . esc_fname
                 endif
+            elseif g:MRU_Use_Current_Window
+                " when using the current window, keep the original alt file,
+                " i.e. avoid setting the alternate file to MRU files buffer
+                if a:edit_type ==# 'edit'
+                    exe 'keepalt edit ' . esc_fname
+                else
+                    exe 'keepalt view ' . esc_fname
+                endif
             else
                 if a:edit_type ==# 'edit'
                     exe 'edit ' . esc_fname
@@ -742,7 +750,7 @@ function! s:MRU_Open_Window(...)
                 let wcmd = '+buffer' . bufnum
             endif
 
-            exe 'silent! botright ' . g:MRU_Window_Height . 'split ' . wcmd
+            exe 'silent! keepalt botright ' . g:MRU_Window_Height . 'split ' . wcmd
         endif
     endif
 
