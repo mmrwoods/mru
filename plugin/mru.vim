@@ -732,6 +732,12 @@ function! s:MRU_Open_Window(...)
                 let cmd = 'buffer ' . bufnum
             endif
 
+            " Hack to avoid setting alt file to the MRU files buffer, if there
+            " is no alternate buffer when opening MRU files, keep it that way
+            if empty(bufname('#'))
+                let cmd = 'keepalt ' . cmd
+            endif
+
             exe cmd
 
             if bufnr('%') != bufnr(bname)
