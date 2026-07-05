@@ -1523,6 +1523,23 @@ func Test_63()
   let g:MRU_Open_File_Relative = 0
 endfunc
 
+" ===================================================================
+" Test64
+" Test opening files with parentheses in the path, unusual, but valid
+" ===================================================================
+func Test_64()
+  call writefile(['MRU test file with parenthesis'], 'file(1).txt')
+  edit file(1).txt
+  let l:file1_path = expand('%:p')
+  edit file2.txt
+  bwipe file(1).txt
+  MRU
+  call search('file(1).txt')
+  exe "normal \<Enter>"
+  call s:Assert_equal(l:file1_path, expand('%:p'))
+  call delete('file(1).txt')
+endfunc
+
 " ==========================================================================
 
 " Create the files used by the tests
